@@ -31,7 +31,7 @@ using namespace std;
 vector<int> encode(ifstream & is) {
 	char ch;
 	vector<int> alpha;
-	while (is.get(ch))
+	while (is.get(ch) && alpha.size() < 512)
 		// only accept alpha
 		if (isalpha(ch))
 			// use integer offsets
@@ -46,17 +46,20 @@ void echo(const vector<int> & text) {
 		if ((i + 1) % 80 == 0)
 			cout << '\n';
 	}
-	cout << endl;
+	cout << '\n';
 }
 
 // main func
 int main(int argc, char *argv[]) {
+	cout << "\n\n";
 	// capture the key
 	ifstream keyin(argv[1]);
 	vector<int> key = encode(keyin);
 	keyin.close();
 
+	cout << "Vigenere Key:\n\n";
 	echo(key);
+	cout << "\n\n";
 
 	// capture the text
 	ifstream textin(argv[2]);
@@ -67,7 +70,9 @@ int main(int argc, char *argv[]) {
 	while (text.size() < 512)
 		text.push_back('x' - 'a');
 
+	cout << "Plaintext:\n\n";
 	echo(text);
+	cout << "\n\n";
 
 	// encrypt the message
 	vector<int> enc;
@@ -77,6 +82,7 @@ int main(int argc, char *argv[]) {
 			enc.back() -= 26;
 	}
 
+	cout << "Ciphertext:\n\n";
 	echo(enc);
 
 	return 0;
